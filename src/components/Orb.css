@@ -1,0 +1,13 @@
+.orb-container {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.orb-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
