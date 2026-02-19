@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Volume2, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
-import horrorMusic from './horror music.mp3';
+import horrorMusic from './horror-music.mp3';
 import angelicMusic from './angelic.mp3';
 
 const AudioControl = styled(motion.button)`
@@ -34,12 +34,12 @@ const AudioControl = styled(motion.button)`
 const WATCHED_SECTIONS = ['about', 'projects', 'contact'];
 
 const AudioPlayer = ({ realm }) => {
-    const [isMuted, setIsMuted] = useState(false);
+    const [isMuted, setIsMuted] = useState(true); // Default to muted for policy compliance
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
-    const mutedRef = useRef(false);
+    const mutedRef = useRef(true);
 
-    // Keep ref in sync with state so IntersectionObserver callback has latest value
+    // Keep ref in sync with state
     useEffect(() => { mutedRef.current = isMuted; }, [isMuted]);
 
     // Create audio instance once
@@ -50,9 +50,25 @@ const AudioPlayer = ({ realm }) => {
         audio.addEventListener('ended', () => setIsPlaying(false));
         audioRef.current = audio;
 
+        // "Unlock" audio on first interaction to satisfy browser policies
+        const unlock = () => {
+            if (audioRef.current) {
+                audioRef.current.play().then(() => {
+                    audioRef.current.pause();
+                }).catch(() => { });
+                window.removeEventListener('click', unlock);
+                window.removeEventListener('scroll', unlock);
+            }
+        };
+
+        window.addEventListener('click', unlock);
+        window.addEventListener('scroll', unlock);
+
         return () => {
             audio.pause();
             audio.removeEventListener('ended', () => setIsPlaying(false));
+            window.removeEventListener('click', unlock);
+            window.removeEventListener('scroll', unlock);
         };
     }, []);
 
@@ -63,7 +79,7 @@ const AudioPlayer = ({ realm }) => {
             audioRef.current.pause();
             audioRef.current.src = realm === 'dark' ? horrorMusic : angelicMusic;
             audioRef.current.load();
-            if (wasPlaying) {
+            if (wasPlaying && !mutedRef.current) {
                 audioRef.current.play().catch(() => { });
             }
         }
@@ -72,7 +88,6 @@ const AudioPlayer = ({ realm }) => {
     // Intersection Observer: play horror sting whenever a section scrolls into view
     useEffect(() => {
         const playStrike = () => {
-            // ONLY play on scroll in DARK realm
             if (mutedRef.current || !audioRef.current || realm !== 'dark') return;
             const audio = audioRef.current;
             audio.currentTime = 0;
@@ -105,7 +120,7 @@ const AudioPlayer = ({ realm }) => {
             clearTimeout(timer);
             observer.disconnect();
         };
-    }, [realm]); // Re-bind observer if realm changes to ensure playStrike logic is fresh
+    }, [realm]);
 
     const toggleMute = (e) => {
         e.stopPropagation();
@@ -113,14 +128,10 @@ const AudioPlayer = ({ realm }) => {
             const nextMuted = !prev;
             if (audioRef.current) {
                 if (nextMuted) {
-                    // Muting — stop everything
                     audioRef.current.pause();
-                    if (realm === 'dark') audioRef.current.currentTime = 0;
                     setIsPlaying(false);
                 } else {
-                    // Unmuting
                     if (realm === 'light') {
-                        // In light mode, clicking unmuting STARTS the persistent loop
                         audioRef.current.loop = true;
                         audioRef.current.play()
                             .then(() => setIsPlaying(true))
