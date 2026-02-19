@@ -2,8 +2,14 @@
 
 A high-end, immersive web experience that merges cinematic aesthetics with cutting-edge front-end technology. This portfolio serves as a portal into a digital realm, featuring 3D interactions, atmospheric audio, and seamless state-driven transitions.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blueviolet?style=for-the-badge)](https://YOUR_LIVE_LINK_HERE)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blueviolet?style=for-the-badge)](https://portfolio-sreyoshi2026-git-main-sreysohi-pals-projects.vercel.app/)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/Sreyoshi244/portfolio_sreyoshi2026)
+
+---
+
+## 🔗 Live Server Link
+
+> [Click here to view live](https://portfolio-sreyoshi2026-git-main-sreysohi-pals-projects.vercel.app/)
 
 ---
 
@@ -64,12 +70,6 @@ This is not just a collection of links; it's a journey. The core concept revolve
 
 ---
 
-## 🔗 Live Server Link
-> [!IMPORTANT]
-> **Update this link once you deploy your application!**
-> [Click here to view live](https://YOUR_LIVE_LINK_HERE)
-
----
 
 ## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
