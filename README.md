@@ -9,7 +9,7 @@ A high-end, immersive web experience that merges cinematic aesthetics with cutti
 
 ## 🔗 Live Server Link
 
-> [Click here to view live](https://portfolio-sreyoshi2026-git-main-sreysohi-pals-projects.vercel.app/)
+> [Click here to view live](https://portfolio-sreyoshi2026.vercel.app/)
 
 ---
 
